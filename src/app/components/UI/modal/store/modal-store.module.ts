@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
-import { modalReducer,modalFeatureKey } from './reducers/modal.reducer';
+import { modalReducer,modalFeatureKey } from './modal.reducer';
 
 @NgModule({
   imports: [

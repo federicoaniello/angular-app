@@ -1,35 +1,39 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { takeUntil } from 'rxjs';
+import { State } from './store/modal.reducer';
+import { BaseComponent } from '../../base/base.component';
+import { AppState } from 'src/store/app.state';
+import { getModalData } from './store/modal.reducers';
+import { IProduct } from 'src/models/IProduct';
+import { modalActions } from './store/modal.actions';
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+  styleUrls: ['./modal.component.scss'],
 })
-export class ModalComponent implements OnInit {
-  store = inject(Store);
-  modalData$: Observable< = this.store.subscribe({
-    next(data) {
-        console.log(data)
-    },
-  })
-  // const emits = defineEmits(["close"]);
-  // const modalStore = useModalStore();
-  // const { getModalData } = storeToRefs(modalStore);
+export class ModalComponent extends BaseComponent implements OnInit {
+  store: Store<AppState> = inject(Store);
+  modalData!: IProduct | null;
 
-
-  constructor(){
-
+  constructor() {
+    super();
   }
-
 
   ngOnInit(): void {
-
+    this.store
+      .select(getModalData)
+      .pipe(takeUntil(this.unsubscriber$))
+      .subscribe({
+        next: (el) => {
+          console.log(el);
+          this.modalData = el;
+        },
+      });
   }
 
-
-  close = (event) => {
-    if (event.target.closest(".modal-body")) return;
-    modalStore.resetModal();
-    emits("close");
+  close(event: any) {
+    if (event?.target?.closest('.modal-body')) return;
+    this.store.dispatch(modalActions.resetData());
   }
 }

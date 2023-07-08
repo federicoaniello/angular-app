@@ -1,0 +1,122 @@
+@use "src/styles/variables" as vars;
+
+
+.product {
+  position: relative;
+  min-height: 320px;
+
+  @media (max-width: 767px) {
+    min-height: 300px;
+  }
+
+  overflow: hidden;
+
+  :hover {
+    .eye {
+      opacity: 1;
+    }
+  }
+
+  &--img {
+    background-color: rgb(232, 232, 232);
+    height: 320px;
+    position: relative;
+
+    @media (max-width: 767px) {
+      height: 220px;
+    }
+
+    .eye {
+      opacity: 0;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 5;
+      width: 26px;
+      border: 1px solid #cec8c8;
+      box-sizing: unset;
+      padding: 10px 20px;
+      background-color: #cec8c8;
+      transition: all 0.2s;
+    }
+
+    .additional-info {
+      display: flex;
+      top: 10px;
+      justify-content: space-between;
+      padding: 10px 20px;
+      height: 44px;
+      position: relative;
+      z-index: 2;
+
+      > span {
+        background-color: vars.$red_discounts;
+        color: white;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        padding: 2px 7px;
+      }
+    }
+
+    > img:not(.eye) {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      max-height: calc(100% - 60px);
+      max-width: 100%;
+      object-fit: contain;
+      @media (max-width: 767px) {
+        max-height: 100%;
+      }
+    }
+  }
+
+  &--info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+
+    @media (max-width: 767px) {
+      padding: 10px;
+    }
+
+    h5 {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    h6 {
+      text-transform: uppercase;
+      font-weight: normal;
+      font-size: 14px;
+    }
+
+    .prices {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 5px;
+      align-items: center;
+
+      .old-price {
+        text-decoration: line-through;
+        color: gainsboro;
+        font-weight: 200;
+        font-size: 14px;
+      }
+
+      span {
+        text-decoration: none;
+        color: black;
+        font-weight: 300;
+        font-size: 16px;
+      }
+    }
+  }
+}

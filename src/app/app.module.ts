@@ -5,12 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { ModalComponent } from './components/UI/modal/modal.component';
-import { ModalStoreModule } from 'src/store/modalStore/modal-store.module';
+import { ModalStoreModule } from 'src/app/components/UI/modal/store/modal-store.module';
+import { HeaderComponent } from './components/UI/header/header.component';
+import { SomeTextComponent } from './components/some-text/some-text.component';
+import { MainComponent } from './views/main/main.component';
+import { BaseComponent } from './components/base/base.component';
+import { ProductItemComponent } from './components/product-item/product-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalComponent
+    ModalComponent,
+    HeaderComponent,
+    SomeTextComponent,
+    MainComponent,
+    BaseComponent,
+    ProductItemComponent
   ],
   imports: [
     BrowserModule,
