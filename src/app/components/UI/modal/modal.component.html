@@ -1,0 +1,35 @@
+  <div *ngIf="getModalData" class="modal-backdrop" (click)="close()">
+      <div v-if="getModalData" class="modal">
+        <header id="modalheader" (click)="close()">
+          <img :src="'/svg/close.svg'" alt="" />
+        </header>
+        <section class="modal-body" id="modalDescription">
+          <div class="img">
+            <img
+              :src="getModalData['image-preview']"
+              :alt="getModalData.name"
+            />
+          </div>
+          <div class="info">
+            <h1>{{ getModalData.name }}</h1>
+            <h3 class="mb-5">{{ getModalData.description }}</h3>
+            <div class="prices">
+              <span v-if="getModalData['old-price']" class="old-price">{{
+                getModalData["old-price"]
+              }}</span>
+              <div
+                class="mb-5 d-flex justify-content-start align-items-center"
+              >
+                <span class="actual-price">{{ getModalData.price }}</span>
+                <span v-if="getModalData.discount" class="discount">{{
+                  getModalData.discount
+                }}</span>
+              </div>
+            </div>
+            <a :href="getModalData.link" target="_blank"
+              ><button class="add-to-cart">Add To Cart</button></a
+            >
+          </div>
+        </section>
+      </div>
+  </div>
