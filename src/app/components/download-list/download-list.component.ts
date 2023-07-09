@@ -1,5 +1,5 @@
 import { takeUntil } from 'rxjs';
-import { Component, EventEmitter, Input, Output, WritableSignal, signal, effect, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, WritableSignal, signal, effect, OnInit, inject, Signal, computed } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IProduct } from 'src/models/IProduct';
 import { colorUtility } from 'src/utils/utils';
@@ -17,8 +17,8 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
   @Input() api: string = '';
   @Output() onColorsGathered = new EventEmitter();
 
-  colors: WritableSignal<string[]> = signal([]);
   jsonData: WritableSignal<IProduct[]> = signal([]);
+  colors: Signal<string[]> = computed(() => colorUtility(this.jsonData()));
   store = inject(Store);
 
   constructor(){
@@ -27,8 +27,10 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(catalogueActions.startingFetchData({api:this.api}));
-    this.store.select(catalogueFeatureKey).pipe(takeUntil(this.unsubscriber$)).subscribe(state => console.log(state))
-    this.colors.set(colorUtility(this.jsonData()))
-    this.onColorsGathered.emit(this.colors())
+    this.store.select(catalogueFeatureKey).pipe(takeUntil(this.unsubscriber$)).subscribe(({products,onError,onLoading}) => {
+      this.jsonData.set(products)
+      this.onColorsGathered.emit(this.colors())
+    }
+      )
   }
 }

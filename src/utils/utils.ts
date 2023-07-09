@@ -6,6 +6,7 @@ export const colorUtility = (jsonData: IProduct[]) => {
     colors.push(...color);
   });
   colors = [...new Set(colors)];
+  debugger
   return colors;
 };
 
