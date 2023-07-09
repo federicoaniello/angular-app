@@ -10,7 +10,7 @@ export const fetchProducts = createEffect(
       return actions$.pipe(
         ofType(catalogueActions.startingFetchData),
         switchMap((action) =>
-          api.download(action._p.api).pipe(
+          api.download(action.api).pipe(
             map((products) => catalogueActions.fetchDataSuccess({ data:products })),
             catchError((error) =>
               of(catalogueActions.fetchDataFail())

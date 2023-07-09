@@ -18,11 +18,13 @@ import { CatalogueComponent } from './components/catalogue/catalogue.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CatalogueStoreModule } from './components/catalogue/store/catalogue-store.module';
 import { EffectsModule } from '@ngrx/effects';
+import { DownloadListComponent } from './components/download-list/download-list.component';
+import { FormsModule } from '@angular/forms';
 
 @Injectable({providedIn: 'root'})
 export class ServiceNameService {
   constructor(private httpClient: HttpClient) { }
-  
+
 }
 @NgModule({
   declarations: [
@@ -34,12 +36,14 @@ export class ServiceNameService {
     BaseComponent,
     ProductItemComponent,
     ProductListComponent,
-    CatalogueComponent
+    CatalogueComponent,
+    DownloadListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     StoreModule.forRoot(),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({

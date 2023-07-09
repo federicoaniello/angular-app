@@ -1,32 +1,36 @@
-import { Component, signal } from '@angular/core';
-import links
+import { links_data } from './../../../assets/data/data';
+import { toCapitalized } from './../../../utils/utils';
+import { Component, signal, OnInit, WritableSignal } from '@angular/core';
 @Component({
   selector: 'app-catalogue',
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss']
 })
-export class CatalogueComponent {
-  
-    select_color = signal(null);
-    api = signal(null);
-    colors = signal([]);
-  
-     onChange = (event) => {
-      select_color.value = event.target.value;
+export class CatalogueComponent implements OnInit {
+
+    select_color: WritableSignal<string> = signal("");
+    api: WritableSignal<string> = signal("");
+    colors: WritableSignal<string[]> = signal([]);
+    toCapitalized = toCapitalized;
+    links_data = links_data;
+
+    ngOnInit(): void {
+      const default_api = links_data?.find((tab) => tab.isDefault)?.api ?? "";
+      this.api.set(default_api);
+
+    }
+
+     onChange(event: any) {
+      this.select_color.set(event.target.value);
     };
-  
-    setApi = (api_) => {
-      api.update(api => api_);
+
+    setApi(api_: string){
+      this.api.set(api_);
     };
-    const { toCapitalized } = useDownload();
-  
-    const onColorsReceived = (cl) => {
-      colors.value = cl;
-      select_color.value = "";
+
+    onColorsReceived(cl: string[]){
+      this.colors.set(cl);
+      this.select_color.set("");
     };
-  
-    onBeforeMount(() => {
-      const default_api = links_data.find((tab) => tab.isDefault === true).api;
-      api.value = default_api;
-    });
+
 }

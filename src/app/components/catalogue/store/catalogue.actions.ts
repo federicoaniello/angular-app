@@ -4,7 +4,7 @@ import { IProduct } from "src/models/IProduct";
 export const catalogueActions = createActionGroup({
     source:"Catalogue Action",
     events:{
-      "Starting fetch data": props<({api:string})>,
+      "Starting fetch data": props<({api: string})>(),
       "fetch data success":props<{data:IProduct[]}>(),
       "fetch data fail": emptyProps(),
     }
