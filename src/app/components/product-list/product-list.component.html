@@ -1,0 +1,20 @@
+    <section class="grid">
+      <template *ngFor="let item of filteredProducts(); let i = index">
+        <app-product-item  [item]="item" />
+      </template>
+      <div *ngIf="products?.length == 0" style="padding-bottom: 500px"></div>
+    </section>
+    <div *ngIf="moreToShow || moreThan4" class="text-center mb-5">
+      <button
+        :disabled="!moreToShow"
+        class="mt-5 show-more d-flex align-items-center justify-content-between"
+        (click)="showMore()"
+      >
+        {{ moreToShow() ? "View more" : "No more products to see" }}
+        <img
+          class="rotate"
+          ngClass="{ 'upside-down': !moreToShow }"
+          [src]="'../../../assets/svg/right-arrow.svg'"
+        />
+      </button>
+    </div>

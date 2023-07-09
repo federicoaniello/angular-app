@@ -2,7 +2,6 @@ import { Component, Input, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IProduct } from 'src/models/IProduct';
 import { State } from '../UI/modal/store/modal.reducer';
-import { AppState } from 'src/store/app.state';
 import { modalActions } from '../UI/modal/store/modal.actions';
 
 @Component({
