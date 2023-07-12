@@ -12,6 +12,6 @@ export class ApiService {
 
 
   download(api: string):Observable<IProduct[]>{
-    return this.http.get<IProduct[]>(`/assets${api}`).pipe(tap( products => console.log(products) ));
+    return this.http.get<IProduct[]>(`/assets${api}`);
   }
 }

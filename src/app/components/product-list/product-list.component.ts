@@ -1,4 +1,4 @@
-import { Component, Input, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IProduct } from 'src/models/IProduct';
 
 @Component({
@@ -8,42 +8,38 @@ import { IProduct } from 'src/models/IProduct';
 })
 export class ProductListComponent {
   @Input() products: IProduct[] = [];
-  @Input() selectedColor: string = "";
+  @Input() selectedColor: string = '';
 
-  truncateValue: WritableSignal<number> = signal(4);
+  truncateValue: number = 4;
 
-  moreToShow: Signal<boolean> = computed(() => {
-    console.log("products Length", this.productsLength());
-    return this.productsLength() > this.truncateValue();
-  });
+  moreToShow(): boolean {
+    return this.productsLength() > this.truncateValue;
+  }
 
-  moreThan4: Signal<boolean> = computed(() => {
-    return this.filteredProducts?.length > 4;
-
-  });
-  
-    productsLength = computed(() => {
-      if (this.selectedColor === null || this.selectedColor === "")
-        return this.products?.length;
-      return this.products?.filter((el) =>
-        el.color.includes(this.selectedColor)
-      ).length;
-    });
-  
-    /**
-     * Restituisce i prodotti filtrati per colore e per il truncateValue (multiplo di 4)
-     */
-    filteredProducts = computed(() => {
-      if (this.selectedColor === null || this.selectedColor === "")
-        return this.products?.slice(0, this.truncateValue());
-      const filtered =
-        this.products?.filter((el) => el.color.includes(this.selectedColor))
-          .slice(0, this.truncateValue()) || [];
-      return filtered;
-    });
-  
-    //FUNCTIONS
-    showMore = () => {
-      this.truncateValue.update(val => val+4);
+  productsLength(): number {
+    if (!this.selectedColor || this.selectedColor === '') {
+      return this.products.length;
     }
+    return this.products.filter((product) =>
+      product.color.includes(this.selectedColor)
+    ).length;
+  }
+
+  filteredProducts(): IProduct[] {
+    if (!this.selectedColor || this.selectedColor === '') {
+      return this.products.slice(0, this.truncateValue);
+    } else {
+      return this.products.filter((product) =>
+        product.color.includes(this.selectedColor)
+      ).slice(0, this.truncateValue);
+    }
+  }
+
+  showMore(): void {
+    this.truncateValue += 4;
+  }
+
+  moreThan4():boolean {
+    return this.filteredProducts().length > 4;
+  }
 }

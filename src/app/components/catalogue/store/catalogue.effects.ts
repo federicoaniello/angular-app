@@ -13,11 +13,11 @@ export const fetchProducts = createEffect(
           api.download(action.api).pipe(
             map((products) => catalogueActions.fetchDataSuccess({ data:products })),
             catchError((error) =>
-              of(catalogueActions.fetchDataFail())
+              of(catalogueActions.fetchDataFail({error}))
             )
           )
         )
       );
     },
-    { functional: true }
+    { functional: true },
   );

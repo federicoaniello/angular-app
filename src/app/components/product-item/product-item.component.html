@@ -7,9 +7,9 @@
           }"
         >
           <span *ngIf="item?.discount">{{ item.discount }}</span>
-          <img src="../../../../src/assets/svg/heart.svg" alt="" />
+          <img src="assets/svg/heart.svg" alt="" />
         </div>
-        <img [src]="item['image-thumb']" alt="" />
+        <img [src]="'assets/' + item['image-thumb']" alt="" />
         <svg
           class="eye"
           fill="white"
