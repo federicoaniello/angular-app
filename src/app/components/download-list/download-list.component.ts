@@ -7,6 +7,7 @@ import { BaseComponent } from '../base/base.component';
 import { catalogueActions } from '../catalogue/store/catalogue.actions';
 import { catalogueFeatureKey } from '../catalogue/store/catalogue.reducer';
 import { getCatalogueProducts } from '../catalogue/store/catalogue.selectors';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-download-list',
@@ -20,12 +21,15 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
 
   jsonData: WritableSignal<IProduct[]> = signal([]);
   colors: Signal<string[]> = computed(() => colorUtility(this.jsonData()));
-  store = inject(Store);
+  apiService = inject(ApiService);
   loading: boolean = false;
   error:boolean = false;
   constructor(){
     super();
-        this.store.select(getCatalogueProducts).pipe(takeUntil(this.unsubscriber$)).subscribe(
+  }
+
+  ngOnInit(): void {
+    this.apiService.fetchProductData(this.api).pipe(takeUntil(this.unsubscriber$)).subscribe(
       {
         next:(products) => {
           this.jsonData.set(products);
@@ -36,9 +40,5 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
       }
 
     )
-  }
-
-  ngOnInit(): void {
-    this.store.dispatch(catalogueActions.startingFetchData({api:this.api}));
   }
 }

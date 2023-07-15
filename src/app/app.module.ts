@@ -5,53 +5,35 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { ModalComponent } from './components/UI/modal/modal.component';
-import { ModalStoreModule } from 'src/app/components/UI/modal/store/modal-store.module';
 import { HeaderComponent } from './components/UI/header/header.component';
-import { SomeTextComponent } from './components/some-text/some-text.component';
-import { MainComponent } from './views/main/main.component';
 import { BaseComponent } from './components/base/base.component';
-import { ProductItemComponent } from './components/product-item/product-item.component';
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from 'src/environments/environment';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { CatalogueComponent } from './components/catalogue/catalogue.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CatalogueStoreModule } from './components/catalogue/store/catalogue-store.module';
+import { HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
-import { DownloadListComponent } from './components/download-list/download-list.component';
 import { FormsModule } from '@angular/forms';
+import { BaseModule } from './components/base/base.module';
 
 @Injectable({providedIn: 'root'})
 export class ServiceNameService {
-  constructor(private httpClient: HttpClient) { }
 
 }
 @NgModule({
   declarations: [
-    AppComponent,
-    ModalComponent,
-    HeaderComponent,
-    SomeTextComponent,
-    MainComponent,
-    BaseComponent,
-    ProductItemComponent,
-    ProductListComponent,
-    CatalogueComponent,
-    DownloadListComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
+    BaseModule,
+    HttpClientModule,
     StoreModule.forRoot(),
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({
 			maxAge: 25,
 			logOnly: environment.production,
-		}),
-    ModalStoreModule,
-    CatalogueStoreModule
+		})
   ],
   providers: [],
   bootstrap: [AppComponent]
