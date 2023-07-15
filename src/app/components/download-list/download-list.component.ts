@@ -1,17 +1,19 @@
 import { Component, EventEmitter, Input, Output, OnInit, WritableSignal } from '@angular/core';
 import { signal, inject, Signal, computed, effect } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { IProduct } from 'src/models/IProduct';
 import { colorUtility } from 'src/utils/utils';
 import { ApiService } from 'src/app/services/api.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   selector: 'app-download-list',
   templateUrl: './download-list.component.html',
   styleUrls: ['./download-list.component.scss'],
 })
-export class DownloadListComponent implements OnInit {
+export class DownloadListComponent extends BaseComponent implements OnInit {
   @Input() selectedColor: Signal<string> = signal('');
   @Output() onColorsGathered = new EventEmitter();
 
@@ -22,9 +24,13 @@ export class DownloadListComponent implements OnInit {
   loading: boolean = false;
   error: boolean = false;
 
+  constructor(){
+    super()
+  }
   ngOnInit() {
     this.apiService.api.pipe(
-      switchMap(api => this.apiService.fetchProductData())
+      switchMap(api => this.apiService.fetchProductData()),
+      takeUntil(this.unsubscriber$)
     ).subscribe({
       next: (products: IProduct[]) => {
         this.jsonData.set(products);

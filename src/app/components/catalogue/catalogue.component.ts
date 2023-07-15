@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { signal, WritableSignal, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -10,6 +10,7 @@ import { ILinksData } from 'src/models/ILinksData';
   selector: 'app-catalogue',
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CatalogueComponent implements OnInit {
   private readonly apiService = inject(ApiService);
