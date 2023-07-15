@@ -1,12 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs';
-import { State } from './store/modal.reducer';
 import { BaseComponent } from '../../base/base.component';
 import { AppState } from 'src/store/app.state';
-import { getModalData } from './store/modal.reducers';
 import { IProduct } from 'src/models/IProduct';
 import { modalActions } from './store/modal.actions';
+import { getModalData } from './store/modal.selectors';
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',

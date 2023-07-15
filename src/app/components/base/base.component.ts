@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 })
 export class BaseComponent implements OnDestroy {
  unsubscriber$: Subject<void> = new Subject<void>();
+ hasUnsavedChanges = false;
 
   constructor(){
   }

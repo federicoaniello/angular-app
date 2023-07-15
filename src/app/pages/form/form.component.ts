@@ -5,6 +5,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { takeUntil } from 'rxjs';
+import { BaseComponent } from 'src/app/components/base/base.component';
 
 interface FormInstance {
   name: FormControl<string>;
@@ -17,16 +19,26 @@ interface FormInstance {
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit {
+export class FormComponent extends BaseComponent implements OnInit {
   private fb = inject(FormBuilder);
   form!: FormGroup<FormInstance>;
   formSent = false;
+
+  constructor() {
+    super();
+    
+  }
   ngOnInit(): void {
     this.form = this.fb.nonNullable.group({
       name: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]],
       checkbox: [false, Validators.requiredTrue],
     });
+
+    this.form.valueChanges.pipe(takeUntil(this.unsubscriber$)).subscribe(() => {
+      this.hasUnsavedChanges = this.form.dirty && !this.form.valid;
+    })
+
   }
 
   onSubmit() {
