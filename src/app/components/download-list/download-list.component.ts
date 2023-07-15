@@ -1,44 +1,42 @@
-import { takeUntil } from 'rxjs';
-import { Component, EventEmitter, Input, Output, WritableSignal, signal, effect, OnInit, inject, Signal, computed } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, EventEmitter, Input, Output, OnInit, WritableSignal } from '@angular/core';
+import { signal, inject, Signal, computed, effect } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
+
 import { IProduct } from 'src/models/IProduct';
 import { colorUtility } from 'src/utils/utils';
-import { BaseComponent } from '../base/base.component';
-import { catalogueActions } from '../catalogue/store/catalogue.actions';
-import { catalogueFeatureKey } from '../catalogue/store/catalogue.reducer';
-import { getCatalogueProducts } from '../catalogue/store/catalogue.selectors';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-download-list',
   templateUrl: './download-list.component.html',
-  styleUrls: ['./download-list.component.scss']
+  styleUrls: ['./download-list.component.scss'],
 })
-export class DownloadListComponent extends BaseComponent implements OnInit {
-  @Input() selectedColor: string = '';
-  @Input() api: string = '';
+export class DownloadListComponent implements OnInit {
+  @Input() selectedColor: Signal<string> = signal('');
   @Output() onColorsGathered = new EventEmitter();
+
+  private readonly apiService = inject(ApiService);
 
   jsonData: WritableSignal<IProduct[]> = signal([]);
   colors: Signal<string[]> = computed(() => colorUtility(this.jsonData()));
-  apiService = inject(ApiService);
   loading: boolean = false;
-  error:boolean = false;
-  constructor(){
-    super();
-  }
+  error: boolean = false;
 
-  ngOnInit(): void {
-    this.apiService.fetchProductData(this.api).pipe(takeUntil(this.unsubscriber$)).subscribe(
-      {
-        next:(products) => {
-          this.jsonData.set(products);
-          this.onColorsGathered.emit(this.colors())
-        },
-        error:(err) => {console.error(err); this.error = true},
-        complete: () => {this.loading = false;}
-      }
-
-    )
+  ngOnInit() {
+    this.apiService.api.pipe(
+      switchMap(api => this.apiService.fetchProductData())
+    ).subscribe({
+      next: (products: IProduct[]) => {
+        this.jsonData.set(products);
+        this.onColorsGathered.emit(this.colors());
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.error = true;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 }

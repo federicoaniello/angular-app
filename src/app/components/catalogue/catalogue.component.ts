@@ -1,30 +1,46 @@
-import { links_data } from './../../../assets/data/data';
-import { toCapitalized } from './../../../utils/utils';
-import { Component, signal, OnInit, WritableSignal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { signal, WritableSignal, Signal, computed, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { ApiService } from 'src/app/services/api.service';
+import { toCapitalized } from '../../../utils/utils';
+import { ILinksData } from 'src/models/ILinksData';
+
 @Component({
   selector: 'app-catalogue',
   templateUrl: './catalogue.component.html',
   styleUrls: ['./catalogue.component.scss'],
 })
 export class CatalogueComponent implements OnInit {
-  links_data = links_data;
+  private readonly apiService = inject(ApiService);
   select_color: WritableSignal<string> = signal('');
-  api: WritableSignal<string> = signal('');
+  links_data: ILinksData[] = [];
+  api!: string;
   colors: WritableSignal<string[]> = signal([]);
   toCapitalized = toCapitalized;
 
-  ngOnInit(): void {
-    const default_api = links_data?.find((tab) => tab.isDefault)?.api ?? '';
-    this.api.set(default_api);
+  constructor() {
+    this.apiService.fetchLinksData().subscribe((links_data) => {
+      this.links_data = links_data;
+      const default_api = links_data.find((tab) => tab.isDefault);
+      if (default_api) {
+        this.apiService.api = default_api.api;
+      }
+    });
+
+    this.apiService.api.pipe(takeUntilDestroyed()).subscribe((api: string) => {
+      this.api = api;
+    });
   }
+
+  ngOnInit(): void {}
 
   onChange(event: any) {
     this.select_color.set(event.target.value);
   }
 
-  setApi(api_: string) {
-    console.log(api_)
-    this.api.set(api_);
+  setApi(api: string) {
+    this.apiService.api = api;
   }
 
   onColorsReceived(cl: string[]) {

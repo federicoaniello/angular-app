@@ -5,7 +5,7 @@
   <div class="tabs mb-5">
     <div class="tabs--container">
       <a
-        [ngClass]="{ 'router-link-active': api() === link.api }"
+        [ngClass]="{ 'router-link-active': api === link.api }"
         (click)="setApi(link.api)"
         *ngFor="let link of links_data"
         >{{ link.name }}</a
@@ -19,8 +19,7 @@
     </select>
   </div>
   <app-download-list
-    [api]="api()"
-    [selectedColor]="select_color()"
+    [selectedColor]="select_color"
     (onColorsGathered)="onColorsReceived($event)"
   >
   </app-download-list>

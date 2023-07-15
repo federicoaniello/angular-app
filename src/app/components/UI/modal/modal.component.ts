@@ -26,7 +26,6 @@ export class ModalComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.unsubscriber$))
       .subscribe({
         next: (el) => {
-          console.log(el);
           this.modalData = el;
         },
       });

@@ -9,8 +9,8 @@ export const fetchProducts = createEffect(
     (actions$ = inject(Actions), api = inject(ApiService)) => {
       return actions$.pipe(
         ofType(catalogueActions.startingFetchData),
-        switchMap((action) =>
-          api.download(action.api).pipe(
+        switchMap(() =>
+          api.download().pipe(
             map((products) => catalogueActions.fetchDataSuccess({ data:products })),
             catchError((error) =>
               of(catalogueActions.fetchDataFail({error}))
