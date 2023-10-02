@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import { ModalStoreModule } from 'src/app/components/UI/modal/store/modal-store.module';
 import { CatalogueStoreModule } from 'src/app/components/catalogue/store/catalogue-store.module';
 import { CatalogueComponent } from 'src/app/components/catalogue/catalogue.component';
 import { DownloadListComponent } from 'src/app/components/download-list/download-list.component';

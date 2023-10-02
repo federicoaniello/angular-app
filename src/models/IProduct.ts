@@ -1,4 +1,4 @@
-export type IProduct = {
+export interface IProduct {
   "image-thumb": string;
   "image-preview": string;
   name: string;

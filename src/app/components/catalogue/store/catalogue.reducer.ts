@@ -20,6 +20,7 @@ const catalogueReducer = createReducer(
   initialState,
   on(catalogueActions.startingFetchData, (state) => ({
     ...state,
+    products:[],
     onLoading: true,
     onError: false
   })),

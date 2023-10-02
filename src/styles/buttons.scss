@@ -1,0 +1,18 @@
+%button-style{
+    text-transform: uppercase;
+    font-size: 1rem;
+    border-radius: 8px;
+    border:none;
+    &.btn-green{
+        background-color: rgb(0, 200, 0);
+        color: white;
+    }
+    &:hover{
+        transform: scale(1.1);
+        transition: transform 0.2s;
+    }
+}
+
+.btn{
+    @extend %button-style;
+}

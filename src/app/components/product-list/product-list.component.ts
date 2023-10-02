@@ -13,6 +13,7 @@ export class ProductListComponent {
 
   truncateValue: number = 4;
 
+
   moreToShow(): boolean {
     return this.productsLength() > this.truncateValue;
   }

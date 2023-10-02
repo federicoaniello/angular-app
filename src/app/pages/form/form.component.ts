@@ -1,18 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from 'src/app/components/base/base.component';
-
-interface FormInstance {
-  name: FormControl<string>;
-  password: FormControl<string>;
-  checkbox: FormControl<boolean>;
-}
 
 @Component({
   selector: 'app-form',
@@ -20,32 +13,37 @@ interface FormInstance {
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent extends BaseComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  form!: FormGroup<FormInstance>;
+  form: FormGroup;
   formSent = false;
 
-  constructor() {
+  constructor(private fb: FormBuilder) {
     super();
-    
+    this.form = this.createForm();
   }
+
   ngOnInit(): void {
-    this.form = this.fb.nonNullable.group({
+    this.setupFormChangeSubscription();
+  }
+
+  private createForm(): FormGroup {
+    return this.fb.group({
       name: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]],
       checkbox: [false, Validators.requiredTrue],
     });
-
-    this.form.valueChanges.pipe(takeUntil(this.unsubscriber$)).subscribe(() => {
-      this.hasUnsavedChanges = this.form.dirty && !this.form.valid;
-    })
-
   }
 
-  onSubmit() {
+  private setupFormChangeSubscription(): void {
+    this.form.valueChanges.pipe(takeUntil(this.unsubscriber$)).subscribe(() => {
+      this.hasUnsavedChanges = this.form.dirty && !this.form.valid;
+    });
+  }
+
+  onSubmit(): void {
     this.formSent = true;
     console.log(this.form);
     if (!this.form.valid) {
-      console.log('form not valid.');
+      console.log('Form is not valid.');
     }
   }
 

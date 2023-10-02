@@ -1,30 +1,33 @@
-<button [routerLink]="''">Go to main module</button>
-
+<button class="btn btn-green" routerLink="/">Torna al modulo principale</button>
 
 <form class="container-fluid" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group mb-3">
-                <label for="exampleInputEmail1">Nome</label>
-                <input formControlName="name" type="text" class="form-control" [ngClass]="{'is-invalid':formInstance.name.errors && formSent}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Inserisci nomes">
-                <small *ngIf="formInstance.name.errors?.required && formSent" class="invalid-feedback">Richiesto un nome</small>
-              </div>
-              <div class="form-group mb-3">
-                <label for="exampleInputPassword1">Password</label>
-                <input formControlName="password" type="password" class="form-control" [ngClass]="{'is-invalid':formInstance.password.errors && formSent}" id="exampleInputPassword1" placeholder="Password">
-                <small *ngIf="formInstance.password.errors?.minlength && formSent" class="invalid-feedback">La password deve avere minimo {{formInstance.password.errors.minlength.requiredLength}} caratteri</small>
-                <small *ngIf="formInstance.password.errors?.required && formSent" class="invalid-feedback">Richiesta una password</small>
-              </div>
-        </div>
-        <div class="col-6 d-flex">
-          <div class="my-auto mr-auto">
-            <div class="form-check mb-3">
-                <input formControlName="checkbox" type="checkbox" class="form-check-input" [ngClass]="{'is-invalid':formInstance.checkbox.errors && formSent}" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Sono un coglione</label>
-                <small *ngIf="formInstance.checkbox.errors?.required && formSent" class="invalid-feedback">Devi spuntare la casella.</small>
-            </div>
-            <button type="submit" class="btn btn-primary ml-auto">Invia</button>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group mb-3">
+        <label for="name">Nome</label>
+        <input formControlName="name" type="text" class="form-control" [class.is-invalid]="formInstance.name.errors && formSent"
+          id="name" placeholder="Inserisci nome">
+        <small *ngIf="formInstance.name.errors?.required && formSent" class="invalid-feedback">Il nome è richiesto</small>
+      </div>
+      <div class="form-group mb-3">
+        <label for="password">Password</label>
+        <input formControlName="password" type="password" class="form-control" [class.is-invalid]="formInstance.password.errors && formSent"
+          id="password" placeholder="Password">
+        <small *ngIf="formInstance.password.errors?.minlength && formSent" class="invalid-feedback">
+          La password deve avere almeno {{ formInstance.password.errors.minlength.requiredLength }} caratteri</small>
+        <small *ngIf="formInstance.password.errors?.required && formSent" class="invalid-feedback">La password è richiesta</small>
+      </div>
     </div>
-  </form>
+    <div class="col-6 d-flex">
+      <div class="my-auto mr-auto">
+        <div class="form-check mb-3">
+          <input formControlName="checkbox" type="checkbox" class="form-check-input" [class.is-invalid]="formInstance.checkbox.errors && formSent"
+            id="checkbox">
+          <label class="form-check-label" for="checkbox">Sono un coglione</label>
+          <small *ngIf="formInstance.checkbox.errors?.required && formSent" class="invalid-feedback">Devi spuntare la casella</small>
+        </div>
+        <button type="submit" class="btn btn-primary ml-auto">Invia</button>
+      </div>
+    </div>
+  </div>
+</form>

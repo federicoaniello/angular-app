@@ -1,4 +1,4 @@
-export type ISwiperData = {
+export interface ISwiperData {
   img: string;
   titles?:{
     first:string;

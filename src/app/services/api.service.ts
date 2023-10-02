@@ -14,8 +14,8 @@ import { ILinksData } from 'src/models/ILinksData';
   providedIn: 'root',
 })
 export class ApiService {
-  private links = links_data;
-  private api_data: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private readonly links: ILinksData[] = links_data;
+  private readonly apiData$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private http: HttpClient,
@@ -23,11 +23,11 @@ export class ApiService {
   ) {}
 
   get api(): Observable<string> {
-    return this.api_data.asObservable().pipe(distinctUntilChanged());
+    return this.apiData$.asObservable().pipe(distinctUntilChanged());
   }
 
-  set api(_api: string) {
-    this.api_data.next(_api);
+  set api(apiEndpoint: string) {
+    this.apiData$.next(apiEndpoint);
   }
 
   fetchLinksData(): Observable<ILinksData[]> {
@@ -35,11 +35,13 @@ export class ApiService {
   }
 
   download(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(`/assets${this.api_data.getValue()}`);
+    const apiUrl = `/assets${this.apiData$.getValue()}`;
+    return this.http.get<IProduct[]>(apiUrl);
   }
 
   fetchProductData(): Observable<IProduct[]> {
-    this.store.dispatch(catalogueActions.startingFetchData({ api: this.api_data.getValue() }));
+    const apiEndpoint = this.apiData$.getValue();
+    this.store.dispatch(catalogueActions.startingFetchData({ api: apiEndpoint }));
     return this.store.select(getCatalogueProducts);
   }
 }
