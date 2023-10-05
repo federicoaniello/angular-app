@@ -17,7 +17,7 @@ export class FormComponent extends BaseComponent implements OnInit {
   formSent = false;
 
   constructor(private fb: FormBuilder) {
-    super();
+    super("FormComponent");
     this.form = this.createForm();
   }
 

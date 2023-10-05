@@ -26,7 +26,7 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
   error: boolean = false;
 
   constructor(){
-    super()
+    super("DownloadListComponent")
   }
   ngOnInit() {
     this.apiService.api.pipe(

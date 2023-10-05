@@ -16,7 +16,7 @@ export class ModalComponent extends BaseComponent implements OnInit {
   modalData!: IProduct | null;
 
   constructor() {
-    super();
+    super("ModalComponent");
   }
 
   ngOnInit(): void {

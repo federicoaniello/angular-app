@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -7,13 +7,13 @@ import { Subject } from 'rxjs';
 export class BaseComponent implements OnDestroy {
  unsubscriber$: Subject<void> = new Subject<void>();
  hasUnsavedChanges = false;
-
-  constructor(){
+ 
+  constructor(@Inject('componentName') private componentName: string){
+    this.componentName = componentName;
   }
-
   ngOnDestroy(): void {
       this.unsubscriber$.next();
-      console.log("unsubscribed")
+      console.log("unsubscribed from " + this.componentName)
       this.unsubscriber$.complete();
   }
 }
