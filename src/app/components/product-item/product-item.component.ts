@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IProduct } from 'src/models/IProduct';
-import { State } from '../UI/modal/store/modal.reducer';
+import { IModalState } from '../UI/modal/store/modal.reducer';
 import { modalActions } from '../UI/modal/store/modal.actions';
 
 @Component({
@@ -12,7 +12,7 @@ import { modalActions } from '../UI/modal/store/modal.actions';
 export class ProductItemComponent implements OnInit {
 
   @Input() item!: IProduct; 
-    store = inject(Store<State>)
+    store: Store<IModalState> = inject<Store<IModalState>>(Store)
 
   ngOnInit(): void {
   }

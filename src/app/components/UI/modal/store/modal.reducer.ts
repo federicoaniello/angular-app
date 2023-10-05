@@ -1,22 +1,22 @@
-import { createReducer, on } from '@ngrx/store';
-import { modalActions } from './modal.actions';
+
+import { createFeature, createReducer, on } from '@ngrx/store';
+ 
+import {modalActions} from './modal.actions';
 import { IProduct } from 'src/models/IProduct';
-
-const modalFeatureKey = 'modal-store';
-
-interface State {
+ 
+export interface IModalState {
   modal: IProduct | null;
 }
-
-const initialState: State = {
-  modal: null
-}
-
-
- const modalReducer = createReducer(
-  initialState,
-  on(modalActions.resetData, state => ({modal:null})),
-  on(modalActions.sendModalData, (state, {modalData}) => ({modal:modalData}))
-);
-
-export {State, modalFeatureKey, modalReducer}
+ 
+const initialState: IModalState = {
+  modal: null,
+};
+ 
+export const modalFeature = createFeature({
+  name: 'modal',
+  reducer: createReducer(
+    initialState,
+    on(modalActions.resetData, () => ({modal:null})),
+    on(modalActions.sendModalData, (state, { modalData }) => ({...state,modal:modalData}))
+  ),
+});

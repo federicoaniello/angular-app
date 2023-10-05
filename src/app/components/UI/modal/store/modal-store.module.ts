@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
-import { modalReducer,modalFeatureKey } from './modal.reducer';
+import { modalFeature } from './modal.reducer';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature(modalFeatureKey,modalReducer)
+    StoreModule.forFeature(modalFeature)
   ],
 })
 export class ModalStoreModule {}

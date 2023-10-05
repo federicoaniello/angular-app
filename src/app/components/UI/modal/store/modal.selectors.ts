@@ -1,3 +1,8 @@
-import { AppState } from "src/store/app.state";
+import { createSelector } from '@ngrx/store';
+import { modalFeature } from './modal.reducer';
 
-export const getModalData = (store:AppState) => store["modal-store"].modal;
+export const modalSelector = createSelector(
+    modalFeature.selectModal,
+    modalFeature.selectModalState,
+    (modal) => ({ modal })
+);
