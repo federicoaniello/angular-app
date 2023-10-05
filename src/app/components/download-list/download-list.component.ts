@@ -7,6 +7,7 @@ import { colorUtility } from 'src/utils/utils';
 import { ApiService } from 'src/app/services/api.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BaseComponent } from '../base/base.component';
+import { ICatalogueState } from '../catalogue/store/catalogue.reducer';
 
 @Component({
   selector: 'app-download-list',
@@ -32,8 +33,8 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
       switchMap(api => this.apiService.fetchProductData()),
       takeUntil(this.unsubscriber$)
     ).subscribe({
-      next: (products: IProduct[]) => {
-        this.jsonData.set(products);
+      next: (catalogueState: ICatalogueState) => {
+        this.jsonData.set(catalogueState.products);
         this.onColorsGathered.emit(this.colors());
       },
       error: (err: any) => {

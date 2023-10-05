@@ -6,9 +6,10 @@ import { distinctUntilChanged, take } from 'rxjs/operators';
 
 import { IProduct } from 'src/models/IProduct';
 import { catalogueActions } from '../components/catalogue/store/catalogue.actions';
-import { getCatalogueProducts } from '../components/catalogue/store/catalogue.selectors';
 import { links_data } from 'src/assets/data/data';
 import { ILinksData } from 'src/models/ILinksData';
+import { ICatalogueState } from '../components/catalogue/store/catalogue.reducer';
+import { getCatalogue } from '../components/catalogue/store/catalogue.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    private store: Store
+    private store: Store<ICatalogueState>
   ) {}
 
   get api(): Observable<string> {
@@ -39,9 +40,9 @@ export class ApiService {
     return this.http.get<IProduct[]>(apiUrl);
   }
 
-  fetchProductData(): Observable<IProduct[]> {
+  fetchProductData(): Observable<ICatalogueState> {
     const apiEndpoint = this.apiData$.getValue();
     this.store.dispatch(catalogueActions.startingFetchData({ api: apiEndpoint }));
-    return this.store.select(getCatalogueProducts);
+    return this.store.select<ICatalogueState>(getCatalogue);
   }
 }

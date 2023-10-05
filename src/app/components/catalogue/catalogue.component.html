@@ -7,11 +7,11 @@
       <a
         [ngClass]="{ 'router-link-active': api === link.api }"
         (click)="setApi(link.api)"
-        *ngFor="let link of links_data"
+        *ngFor="let link of linksData"
         >{{ link.name }}</a
       >
     </div>
-    <select [ngModel]="select_color()" (change)="onChange($event)">
+    <select [ngModel]="selectColor()" (change)="onChange($event)">
       <option selected value="">Filter by color</option>
       <option *ngFor="let color of colors(); let index = index" [value]="color">
         {{ toCapitalized(color) }}
@@ -19,7 +19,7 @@
     </select>
   </div>
   <app-download-list
-    [selectedColor]="select_color"
+    [selectedColor]="selectColor"
     (onColorsGathered)="onColorsReceived($event)"
   >
   </app-download-list>

@@ -1,19 +1,10 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { CatalogueState, catalogueFeatureKey } from './catalogue.reducer';
+import { createSelector } from '@ngrx/store';
+import { catalogueFeature } from './catalogue.reducer';
 
-export const selectCatalogueState = createFeatureSelector<CatalogueState>(catalogueFeatureKey);
 
-export const getCatalogueProducts = createSelector(
-  selectCatalogueState,
-  (state) => state.products
-);
-
-export const getCatalogueLoading = createSelector(
-  selectCatalogueState,
-  (state) => state.onLoading
-);
-
-export const getCatalogueError = createSelector(
-  selectCatalogueState,
-  (state) => state.onError
+export const getCatalogue = createSelector(
+  catalogueFeature.selectProducts,
+  catalogueFeature.selectOnLoading,
+  catalogueFeature.selectOnError,
+  (products,onLoading,onError) => ({products,onLoading,onError})
 );
