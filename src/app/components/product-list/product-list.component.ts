@@ -1,47 +1,47 @@
-import { Component, Input } from '@angular/core';
-import { Signal, signal } from '@angular/core';
+import { Component, Input, OnInit, WritableSignal, computed } from '@angular/core';
+import { Signal, signal, effect } from '@angular/core';
 import { IProduct } from 'src/models/IProduct';
+import { BaseComponent } from '../base/base.component';
+import { Observable } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent {
+export class ProductListComponent extends BaseComponent implements OnInit {
   @Input() products: Signal<IProduct[]> = signal([]);
   @Input() selectedColor: Signal<string> = signal('');
 
-  truncateValue: number = 4;
-
-
-  moreToShow(): boolean {
-    return this.productsLength() > this.truncateValue;
+  constructor() {
+    super("ProductListComponent");
   }
+  
+  truncateValue: WritableSignal<number> = signal(4);
+  moreToShow: Signal<boolean> = computed(() => this.truncateValue() < this.filteredProducts()?.length);
+  canShowOtherProducts: Signal<boolean> = computed(() => this.filteredProducts()?.length >= this.truncateValue() ) ;
 
-  productsLength(): number {
-    if (!this.selectedColor || this.selectedColor() === '') {
-      return this.products().length;
-    }
-    return this.products()
-      .filter((product) => product.color.includes(this.selectedColor()))
-      .length;
-  }
-
-  filteredProducts(): IProduct[] {
-    if (!this.selectedColor || this.selectedColor() === '') {
-      return this.products().slice(0, this.truncateValue);
+  filteredProducts: Signal<IProduct[]> = computed(() => {
+    if (!this.selectedColor() || this.selectedColor() === '') {
+      return this.products();
     } else {
       return this.products()
-        .filter((product) => product.color.includes(this.selectedColor()))
-        .slice(0, this.truncateValue);
+      .filter((product) => product.color.includes(this.selectedColor()));
     }
-  }
+  })
 
   showMore(): void {
-    this.truncateValue += 4;
+    this.truncateValue.update(value => value + 4);
   }
 
-  moreThan4(): boolean {
-    return this.filteredProducts().length > 4;
+  setTruncateValueToDefault() {
+    this.truncateValue.set(4);
   }
+
+  ngOnInit(): void {
+  }
+
+
+ 
 }

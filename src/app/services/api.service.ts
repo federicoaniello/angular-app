@@ -24,7 +24,7 @@ export class ApiService {
   ) {}
 
   get api(): Observable<string> {
-    return this.apiData$.asObservable().pipe(distinctUntilChanged());
+    return this.apiData$.asObservable();
   }
 
   set api(apiEndpoint: string) {
