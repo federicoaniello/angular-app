@@ -6,5 +6,21 @@ export const getCatalogue = createSelector(
   catalogueFeature.selectProducts,
   catalogueFeature.selectOnLoading,
   catalogueFeature.selectOnError,
-  (products,onLoading,onError) => ({products,onLoading,onError})
+  catalogueFeature.selectColorSelected,
+  (products,onLoading,onError,colorSelected) => ({products,onLoading,onError,colorSelected})
 );
+
+export const getProducts = createSelector(
+  catalogueFeature.selectProducts,
+  (products) => products
+)
+
+export const getSelectedColor = createSelector(
+  catalogueFeature.selectColorSelected,
+  (colorSelected) => colorSelected
+)
+
+export const getFilteredProducts = createSelector(
+  catalogueFeature.selectFilteredProducts,
+  (filteredProducts) => filteredProducts
+)

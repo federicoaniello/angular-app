@@ -7,7 +7,8 @@ export const catalogueActions = createActionGroup({
       "Starting fetch data": props<({api: string})>(),
       "fetch data success":props<{data:IProduct[]}>(),
       "fetch data fail": props<{error:any}>(),
-    }
+      "set colorSelected": props<{color:string}>()
+        }
     })
 
 

@@ -1,7 +1,5 @@
     <section class="grid">
-      color: {{ selectedColor }}
-        <app-product-item *ngFor="let item of filteredProducts() | slice:0:truncateValue; let i = index" [item]="item" />
-      <div *ngIf="products.length === 0"></div>
+        <app-product-item *ngFor="let item of filteredProducts | slice:0:truncateValue; let i = index" [item]="item" />
     </section>
     <div *ngIf="canShowOtherProducts()" class="text-center mb-5">
       <button

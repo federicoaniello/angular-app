@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { distinctUntilChanged, take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 import { IProduct } from 'src/models/IProduct';
 import { catalogueActions } from '../components/catalogue/store/catalogue.actions';
 import { links_data } from 'src/assets/data/data';
 import { ILinksData } from 'src/models/ILinksData';
 import { ICatalogueState } from '../components/catalogue/store/catalogue.reducer';
-import { getCatalogue } from '../components/catalogue/store/catalogue.selectors';
+import { getCatalogue, getProducts } from '../components/catalogue/store/catalogue.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -40,9 +40,9 @@ export class ApiService {
     return this.http.get<IProduct[]>(apiUrl);
   }
 
-  fetchProductData(): Observable<ICatalogueState> {
+  fetchProductData(): Observable<IProduct[]> {
     const apiEndpoint = this.apiData$.getValue();
     this.store.dispatch(catalogueActions.startingFetchData({ api: apiEndpoint }));
-    return this.store.select<ICatalogueState>(getCatalogue);
+    return this.store.select<IProduct[]>(getProducts).pipe(filter(products => products.length > 0));
   }
 }

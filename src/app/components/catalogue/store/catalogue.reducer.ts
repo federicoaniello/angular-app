@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from "@ngrx/store";
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { IProduct } from "src/models/IProduct";
 import { catalogueActions } from "./catalogue.actions";
 
@@ -7,12 +7,14 @@ export interface ICatalogueState {
   products: IProduct[];
   onLoading: boolean;
   onError: boolean;
+  colorSelected: string;
 }
 
  const initialState: ICatalogueState = {
   products: [],
   onLoading: false,
-  onError: false
+  onError: false,
+  colorSelected: ''
 };
 
 export const catalogueFeature = createFeature({
@@ -36,7 +38,25 @@ export const catalogueFeature = createFeature({
       products: data,
       onLoading: false,
       onError: false
+    })),
+    on(catalogueActions.setColorSelected, (state, {color}) => ({
+      ...state,
+      colorSelected: color
     }))
-  )
+  ),
+  extraSelectors: ({ selectProducts, selectColorSelected }) => ({
+    selectFilteredProducts: createSelector(
+      selectProducts,
+      selectColorSelected,
+      (products, color) => {
+        if (!color || color === '') {
+          return products;
+        } else {
+          return products
+            .filter((product) => product.color.includes(color));
+        }
+      },
+    ),
+  }),
 }
 );
