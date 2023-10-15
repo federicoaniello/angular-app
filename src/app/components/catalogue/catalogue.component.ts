@@ -24,7 +24,7 @@ export class CatalogueComponent extends BaseComponent implements OnInit {
   toCapitalized = toCapitalized;
 
   constructor() {
-    super("CatalogueComponent");
+    super();
   }
   
   ngOnInit(): void {

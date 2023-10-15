@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, WritableSignal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, WritableSignal, computed } from '@angular/core';
 import { Signal, signal, effect } from '@angular/core';
 import { IProduct } from 'src/models/IProduct';
 import { BaseComponent } from '../base/base.component';
@@ -8,14 +8,15 @@ import { toObservable } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductListComponent extends BaseComponent implements OnInit {
   @Input() products: Signal<IProduct[]> = signal([]);
   @Input() selectedColor: Signal<string> = signal('');
 
   constructor() {
-    super("ProductListComponent");
+    super();
   }
   
   truncateValue: WritableSignal<number> = signal(4);
@@ -29,7 +30,7 @@ export class ProductListComponent extends BaseComponent implements OnInit {
       return this.products()
       .filter((product) => product.color.includes(this.selectedColor()));
     }
-  })
+  });
 
   showMore(): void {
     this.truncateValue.update(value => value + 4);
@@ -41,7 +42,5 @@ export class ProductListComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-
  
 }

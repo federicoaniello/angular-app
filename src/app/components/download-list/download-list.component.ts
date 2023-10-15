@@ -15,8 +15,8 @@ import { ICatalogueState } from '../catalogue/store/catalogue.reducer';
   styleUrls: ['./download-list.component.scss'],
 })
 export class DownloadListComponent extends BaseComponent implements OnInit {
-  @Input() selectedColor: Signal<string> = signal('');
-  @Output() onColorsGathered = new EventEmitter();
+  @Input() selectedColor = signal('');
+  @Output() onColorsGathered = new EventEmitter<string[]>();
 
   private readonly apiService = inject(ApiService);
 
@@ -26,7 +26,8 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
   error: boolean = false;
 
   constructor(){
-    super("DownloadListComponent")
+    super();
+
   }
   ngOnInit() {
     this.apiService.api.pipe(
