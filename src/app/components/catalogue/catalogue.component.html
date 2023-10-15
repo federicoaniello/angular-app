@@ -11,9 +11,9 @@
         >{{ link.name }}</a
       >
     </div>
-    <select [ngModel]="selectColor()" (change)="onChange($event)">
+    <select [ngModel]="selectColor" (change)="onChange($event)">
       <option selected value="">Filter by color</option>
-      <option *ngFor="let color of colors(); let index = index" [value]="color">
+      <option *ngFor="let color of colors; let index = index" [value]="color">
         {{ toCapitalized(color) }}
       </option>
     </select>

@@ -8,39 +8,38 @@ import { toObservable } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent extends BaseComponent implements OnInit {
-  @Input() products: Signal<IProduct[]> = signal([]);
-  @Input() selectedColor: Signal<string> = signal('');
+  @Input() products: IProduct[] = [];
+  @Input() selectedColor = '';
 
   constructor() {
     super();
   }
-  
-  truncateValue: WritableSignal<number> = signal(4);
-  moreToShow: Signal<boolean> = computed(() => this.truncateValue() < this.filteredProducts()?.length);
-  canShowOtherProducts: Signal<boolean> = computed(() => this.filteredProducts()?.length >= this.truncateValue() ) ;
 
-  filteredProducts: Signal<IProduct[]> = computed(() => {
-    if (!this.selectedColor() || this.selectedColor() === '') {
-      return this.products();
+  truncateValue: number = 4;
+  moreToShow(): boolean { return this.truncateValue < this.filteredProducts()?.length };
+  canShowOtherProducts(): boolean { return this.filteredProducts()?.length >= this.truncateValue };
+
+  filteredProducts(): IProduct[] {
+    if (!this.selectedColor || this.selectedColor === '') {
+      return this.products;
     } else {
-      return this.products()
-      .filter((product) => product.color.includes(this.selectedColor()));
+      return this.products
+        .filter((product) => product.color.includes(this.selectedColor));
     }
-  });
+  };
 
   showMore(): void {
-    this.truncateValue.update(value => value + 4);
+    this.truncateValue += 4;
   }
 
   setTruncateValueToDefault() {
-    this.truncateValue.set(4);
+    this.truncateValue = 4;
   }
 
   ngOnInit(): void {
   }
- 
+
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { signal, WritableSignal, inject } from '@angular/core';
+import { inject } from '@angular/core';
 
 import { ApiService } from 'src/app/services/api.service';
 import { toCapitalized } from '../../../utils/utils';
@@ -17,10 +17,10 @@ export class CatalogueComponent extends BaseComponent implements OnInit {
 
   private readonly apiService = inject(ApiService);
 
-  selectColor: WritableSignal<string> = signal('');
+  selectColor: string = '';
   linksData: ILinksData[] = [];
   api!: string;
-  colors: WritableSignal<string[]> = signal([]);
+  colors: string[] = [];
   toCapitalized = toCapitalized;
 
   constructor() {
@@ -42,15 +42,15 @@ export class CatalogueComponent extends BaseComponent implements OnInit {
   }
 
   onChange(event: any) {
-    this.selectColor.set(event.target.value);
+    this.selectColor = (event.target.value);
   }
 
   setApi(api: string) {
     this.apiService.api = api;
   }
 
-  onColorsReceived(cl: string[]) {
-    this.colors.set(cl);
-    this.selectColor.set('');
+  onColorsReceived(colorsArray: string[]) {
+    this.colors = (colorsArray);
+    this.selectColor = '';
   }
 }

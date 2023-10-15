@@ -15,13 +15,13 @@ import { ICatalogueState } from '../catalogue/store/catalogue.reducer';
   styleUrls: ['./download-list.component.scss'],
 })
 export class DownloadListComponent extends BaseComponent implements OnInit {
-  @Input() selectedColor = signal('');
+  @Input() selectedColor = '';
   @Output() onColorsGathered = new EventEmitter<string[]>();
 
   private readonly apiService = inject(ApiService);
 
-  jsonData: WritableSignal<IProduct[]> = signal([]);
-  colors: Signal<string[]> = computed(() => colorUtility(this.jsonData()));
+  jsonData: IProduct[] = [];
+  colors: string[] = [];
   loading: boolean = false;
   error: boolean = false;
 
@@ -35,8 +35,9 @@ export class DownloadListComponent extends BaseComponent implements OnInit {
       takeUntil(this.unsubscriber$)
     ).subscribe({
       next: (catalogueState: ICatalogueState) => {
-        this.jsonData.set(catalogueState.products);
-        this.onColorsGathered.emit(this.colors());
+        this.jsonData = catalogueState.products;
+        this.colors = colorUtility(this.jsonData);
+        this.onColorsGathered.emit(this.colors);
       },
       error: (err: any) => {
         console.error(err);
